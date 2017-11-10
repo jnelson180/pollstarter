@@ -15,7 +15,10 @@ mongoose.Promise = global.Promise;
 
 app.use('/controllers', express.static(process.cwd() + '/app/controllers'));
 app.use('/public', express.static(process.cwd() + '/public'));
+app.use('/css', express.static(process.cwd() + '/public/css'));
+app.use('/build', express.static(process.cwd() + '/build'));
 app.use('/common', express.static(process.cwd() + '/app/common'));
+app.use('/app', express.static(process.cwd() + '/app/'));
 
 app.use(session({
 	secret: 'secretClementine',

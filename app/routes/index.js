@@ -15,10 +15,12 @@ module.exports = function (app, passport) {
 
 	var clickHandler = new ClickHandler();
 
+
 	app.route('/')
-		.get(isLoggedIn, function (req, res) {
-			res.sendFile(path + '/public/index.html');
-		});
+        .get(isLoggedIn, function (req, res) {
+            res.sendFile(path + '/public/index.html');
+        });
+
 
 	app.route('/login')
 		.get(function (req, res) {
