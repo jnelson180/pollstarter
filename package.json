@@ -3,13 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-<<<<<<< HEAD
-        "dotenv": "^4.0.0",
-        "passport": "^0.4.0",
-        "passport-facebook": "^2.1.1",
-=======
         "antd": "^2.13.9",
->>>>>>> dd808d59c16762e9ee67c5b4e90909a9bc8be082
         "react": "^16.1.0",
         "react-dom": "^16.1.0",
         "react-scripts": "1.0.17"
