@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Button } from 'antd';
-import passport from 'passport';
-import { FacebookStrategy } from 'passport-facebook';
+var FacebookStrategy = require('passport-facebook').Strategy;
 require('dotenv').config();
+var passport = require('passport');
 
 class App extends Component {
     render() {
