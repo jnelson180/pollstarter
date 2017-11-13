@@ -1,19 +1,28 @@
 {
-    "name": "pollstarter",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "antd": "^2.13.9",
-        "passport": "^0.4.0",
-        "passport-facebook": "^2.1.1",
-        "react": "^16.1.0",
-        "react-dom": "^16.1.0",
-        "react-scripts": "1.0.17"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test --env=jsdom",
-        "eject": "react-scripts eject"
-    }
+  "name": "pollstarter",
+  "version": "1.0.0",
+  "description": "A simple, elegant polling/voting solution built on the MERN stack.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jnelson180/pollstarter.git"
+  },
+  "keywords": [
+    "polling",
+    "voting",
+    "freecodecamp"
+  ],
+  "author": "Jake Nelson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jnelson180/pollstarter/issues"
+  },
+  "homepage": "https://github.com/jnelson180/pollstarter#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
 }
