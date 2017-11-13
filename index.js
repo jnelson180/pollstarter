@@ -9,7 +9,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 // Put all API endpoints under '/api'
 app.get('/api/passwords', (req, res) => {
     // Generate some passwords
-    const passwords = ['yay', 'it', 'worked'];
+    const passwords = ['s838S@JrK', 'nvo83du29$@d', '2bvUz!56rts'];
 
     const count = passwords.length;
 
