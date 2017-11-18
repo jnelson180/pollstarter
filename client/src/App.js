@@ -1,28 +1,25 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Api } from './api/Api';
 import { Button } from 'antd';
-// var FacebookStrategy = require('passport-facebook').Strategy;
 require('dotenv').config();
-// var passport = require('passport');
 
 class App extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            passwords: []
+            user: null
         }
     }
-    // Fetch passwords after first mount
-    componentDidMount() {
-        this.getPasswords();
-    }
 
-    getPasswords = () => {
-        // Get the passwords and store them in state
-        fetch('/api/passwords')
-            .then(res => res.json())
-            .then(passwords => this.setState({ passwords }));
+    componentWillMount() {
+        Api.getUser()
+            .then((res) => {
+                console.log(res);
+                this.setState({user: res});
+            })
+            .catch((error) => { console.log(error) });
     }
 
     render() {
@@ -30,33 +27,19 @@ class App extends Component {
             <div className="App">
                 <header className="App-header">
                     <h1 className="App-title">Welcome to Pollstarter</h1>
+                    {this.state.user ?
+                    <span className="welcome-text">Hi {this.state.user.displayName}!</span>
+                    : null }
                 </header>
-                <p className="App-intro">
-                    {this.state.passwords}
-                </p>
-                <Button onClick={() => {
-                    // this.fbLogin();
-                }}>
-                    Log In
-                </Button>
+                { !this.state.user ? 
+                <a href="http://localhost:5000/api/login/facebook">
+                    <Button>
+                        Log In a
+                    </Button>
+                </a> : null }
             </div>
         );
     }
-
-    // fbLogin() {
-    //     passport.use(new FacebookStrategy({
-    //             clientID: process.env.FACEBOOK_APP_ID,
-    //             clientSecret: process.env.FACEBOOK_APP_SECRET,
-    //             callbackURL: "http://localhost:3000/auth/facebook/callback"
-    //         },
-    //         function(accessToken, refreshToken, profile, cb) {
-    //             console.log(accessToken, refreshToken, profile, cb);
-    //             // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-    //             //     return cb(err, user);
-    //             // });
-    //         }
-    //     ));        
-    // }
 }
 
 export default App;

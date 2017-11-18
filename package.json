@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "heroku-postbuild": "cd client && npm install && npm run build"
-},
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jnelson180/pollstarter.git"
@@ -24,6 +24,15 @@
   },
   "homepage": "https://github.com/jnelson180/pollstarter#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "connect-ensure-login": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "express-http-proxy": "^1.1.0",
+    "express-session": "^1.15.6",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1"
   }
 }
