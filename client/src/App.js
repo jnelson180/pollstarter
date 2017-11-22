@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Api } from './api/Api';
-import { Button } from 'antd';
+import { Button, Icon } from 'semantic-ui-react';
 require('dotenv').config();
 
 class App extends Component {
@@ -33,8 +33,8 @@ class App extends Component {
                 </header>
                 { !this.state.user ? 
                 <a href="http://localhost:5000/api/login/facebook">
-                    <Button>
-                        Log In a
+                    <Button color="facebook">
+                        <Icon name="facebook" />Login with Facebook
                     </Button>
                 </a> : null }
             </div>

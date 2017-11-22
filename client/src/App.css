@@ -9,9 +9,10 @@
 
 .App-header {
     background-color: #222;
-    height: 60px;
+    height: 70px;
     padding: 20px;
     color: white;
+    margin-bottom: 10px;
 }
 
 .App-title {
