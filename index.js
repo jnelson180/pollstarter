@@ -4,10 +4,10 @@ var Strategy = require('passport-facebook').Strategy;
 var path = require('path');
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
-var url = 'mongodb://localhost:27017/pollstarter';
 
 require('dotenv').config();
 
+var url = process.env.MONGODB_URI;
 let env = "development";
 
 // Configure the Facebook strategy for use by Passport.
