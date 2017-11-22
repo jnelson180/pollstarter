@@ -2,6 +2,9 @@ var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
 var path = require('path');
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
+var url = 'mongodb://localhost:27017/pollstarter';
 
 require('dotenv').config();
 
@@ -115,6 +118,15 @@ app.get('/profile',
             user: fbProfile
         });
     });
+
+app.get('/dbTest', (req, res) => {
+    MongoClient.connect(url, function(err, db) {
+        assert.equal(null, err);
+        console.log("Connected correctly to server");   
+        res.end('success!');
+        db.close();
+    });
+})
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
