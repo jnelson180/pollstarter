@@ -37,6 +37,8 @@ class App extends Component {
                         <Icon name="facebook" />Login with Facebook
                     </Button>
                 </a> : null }
+                <br />
+                <a href="http://localhost:3000/profile">Profile</a>
             </div>
         );
     }

@@ -3,7 +3,11 @@ var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
 var path = require('path');
 var MongoClient = require('mongodb').MongoClient;
+var mongoose = require('mongoose');
+var db = mongoose.connection;
 var assert = require('assert');
+var User = require('./schema/User');
+// console.log('user is ', User);
 
 require('dotenv').config();
 
@@ -26,7 +30,7 @@ passport.use(new Strategy({
         callbackURL: 'http://localhost:5000/api/login/facebook/return'
     },
     function (accessToken, refreshToken, profile, cb) {
-        console.log('in passport.use, profile is:', profile);
+        console.log('in passport.use, profile is fbProfile');
         fbProfile = profile;
         // In this example, the user's Facebook profile is supplied as the user
         // record.  In a production-quality application, the Facebook profile should
@@ -84,12 +88,6 @@ app.use(passport.session());
 //     // probably serve up build version in production
 //   }
 
-// Define routes.
-// app.get('/',
-//   function(req, res) {
-//     res.send('home', { user: req.user });
-//   });
-
 app.get('/login',
     function (req, res) {
         res.send(req.user);
@@ -105,6 +103,18 @@ app.get('/api/login/facebook/return',
     function (req, res) {
         // need to fix this
         fbProfile = req.user;
+        User.findOne({id: req.user.id})
+            .exec((err, user) => {
+                if (err) {
+                    console.log(err);
+                    return err;
+                } else if (!user) {
+                    console.log('user not found, creating.', err);
+                    this.createUser();
+                }
+                console.log('logging in as', user.name)
+                
+            })
         console.log('redirecting to localhost:3000/');
         res.redirect('http://localhost:3000/');
     });
@@ -113,9 +123,27 @@ app.get('/profile',
     // require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         console.log('hit profile endpoint');
-        console.log(req.user);
-        res.send({
-            user: fbProfile
+        const user = fbProfile;
+        var userData = {
+            id: user.id,
+            name: user.displayName
+        }
+
+        mongoose.connect(url, function (err, db) {
+            assert.equal(null, err);
+            console.log('connected to db!');
+
+        
+            User.create(userData, function (err, user) {
+                console.log('inside user.create callback');
+                if (err) {
+                    console.log(err);
+                    return next(err);
+                } else {
+                    console.log('user created');
+                }
+                res.end(JSON.stringify(userData));
+            });
         });
     });
 
@@ -126,7 +154,24 @@ app.get('/dbTest', (req, res) => {
         res.end('success!');
         db.close();
     });
-})
+});
+
+function createUser() {
+    const user = fbProfile;
+    var userData = {
+        id: user.id,
+        name: user.displayName
+    }
+    User.create(userData, function (err, user) {
+        console.log('inside user.create callback');
+        if (err) {
+            console.log(err);
+            return next(err);
+        } else {
+            console.log('user created');
+        }
+    });
+}
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
