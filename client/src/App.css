@@ -19,6 +19,11 @@
     font-size: 1.5em;
 }
 
+.App-jumbo {
+    font-size: 6em;
+    color: white;
+}
+
 .App-intro {
     font-size: large;
 }
