@@ -117,7 +117,7 @@ app.get('/api/login/facebook/return',
                 }
             })
         console.log('redirecting to localhost:3000/');
-        res.redirect('http://localhost:3000/');
+        res.redirect('http://localhost:3000/home');
     });
 
 app.get('/profile',

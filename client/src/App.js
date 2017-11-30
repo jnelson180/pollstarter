@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { Api } from './api/Api';
 import { Button, Icon } from 'semantic-ui-react';
-require('dotenv').config();
+import Nav from './Nav';
 
 class App extends Component {
     constructor(props) {
@@ -16,6 +16,7 @@ class App extends Component {
     componentWillMount() {
         Api.getUser()
             .then((res) => {
+                console.log(res);
                 this.setState({user: res});
             })
             .catch((error) => { console.log(error) });
@@ -30,12 +31,7 @@ class App extends Component {
                         <span className="welcome-text">Hi {this.state.user.name}!</span>
                     : null }
                 </header>
-                { !this.state.user ? 
-                <a href="http://localhost:5000/api/login/facebook">
-                    <Button color="facebook">
-                        <Icon name="facebook" />Login with Facebook
-                    </Button>
-                </a> : <a href="http://localhost:3000/profile">Profile</a> }
+                <Nav />
             </div>
         );
     }
