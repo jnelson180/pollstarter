@@ -16,8 +16,11 @@ class App extends Component {
     componentWillMount() {
         Api.getUser()
             .then((res) => {
-                console.log(res);
                 this.setState({user: res});
+                Api.getFbProfile()
+                    .then((res) => {
+                        console.log(res);
+                    })
             })
             .catch((error) => { console.log(error) });
     }
@@ -28,7 +31,7 @@ class App extends Component {
                 <header className="App-header">
                     <h1 className="App-title">Welcome to Pollstarter</h1>
                     {this.state.user ?
-                    <span className="welcome-text">Hi {this.state.user.displayName}!</span>
+                    <span className="welcome-text">Hi {this.state.user.name}!</span>
                     : null }
                 </header>
                 { !this.state.user ? 
@@ -36,9 +39,7 @@ class App extends Component {
                     <Button color="facebook">
                         <Icon name="facebook" />Login with Facebook
                     </Button>
-                </a> : null }
-                <br />
-                <a href="http://localhost:3000/profile">Profile</a>
+                </a> : <a href="http://localhost:3000/profile">Profile</a> }
             </div>
         );
     }

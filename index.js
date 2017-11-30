@@ -23,6 +23,7 @@ let env = "development";
 // authentication.
 
 var fbProfile = null;
+console.log(fbProfile);
 
 passport.use(new Strategy({
         clientID: process.env.CLIENT_ID,
@@ -110,10 +111,10 @@ app.get('/api/login/facebook/return',
                     return err;
                 } else if (!user) {
                     console.log('user not found, creating.', err);
-                    this.createUser();
-                }
+                    createUser();
+                } else {
                 console.log('logging in as', user.name)
-                
+                }
             })
         console.log('redirecting to localhost:3000/');
         res.redirect('http://localhost:3000/');
@@ -123,40 +124,47 @@ app.get('/profile',
     // require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         console.log('hit profile endpoint');
+        console.log(req.user);
         const user = fbProfile;
         var userData = {
             id: user.id,
             name: user.displayName
         }
 
-        mongoose.connect(url, function (err, db) {
-            assert.equal(null, err);
-            console.log('connected to db!');
+        // mongoose.connect(url, function (err, db) {
+        //     assert.equal(null, err);
+        //     console.log('connected to db!');
 
-        
-            User.create(userData, function (err, user) {
-                console.log('inside user.create callback');
-                if (err) {
-                    console.log(err);
-                    return next(err);
-                } else {
-                    console.log('user created');
-                }
-                res.end(JSON.stringify(userData));
-            });
-        });
+        // console.log('REQ.USER.ID =', userData.id);
+        // User.findOne({id: userData.id})
+        //     .exec((err, user) => {
+        //         if (err) {
+        //             console.log(err);
+        //             return next(err);
+        //         } else if (!user && !err) {
+        //             console.log('user not found, creating.', err);
+        //             createUser();
+        //         } else {
+        //         console.log('logging in as', user.name)
+        //         res.send(userData);
+        //         }
+        //     })
+        // });
+
+        res.send(userData);
     });
 
-app.get('/dbTest', (req, res) => {
-    MongoClient.connect(url, function(err, db) {
-        assert.equal(null, err);
-        console.log("Connected correctly to server");   
-        res.end('success!');
-        db.close();
-    });
-});
+// app.get('/dbTest', (req, res) => {
+//     MongoClient.connect(url, function(err, db) {
+//         assert.equal(null, err);
+//         console.log("Connected correctly to server");   
+//         res.end('success!');
+//         db.close();
+//     });
+// });
 
 function createUser() {
+    console.log('called createUser');
     const user = fbProfile;
     var userData = {
         id: user.id,
@@ -173,10 +181,19 @@ function createUser() {
     });
 }
 
+app.get('/', (req, res) => {
+    if (fbProfile) {
+        return null;
+        res.end();
+    }
+    res.redirect('/login');
+});
+
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+    res.end('404!');
+    // res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
 
 app.listen(5000);
