@@ -17,10 +17,6 @@ class App extends Component {
         Api.getUser()
             .then((res) => {
                 this.setState({user: res});
-                Api.getFbProfile()
-                    .then((res) => {
-                        console.log(res);
-                    })
             })
             .catch((error) => { console.log(error) });
     }
@@ -31,7 +27,7 @@ class App extends Component {
                 <header className="App-header">
                     <h1 className="App-title">Welcome to Pollstarter</h1>
                     {this.state.user ?
-                    <span className="welcome-text">Hi {this.state.user.name}!</span>
+                        <span className="welcome-text">Hi {this.state.user.name}!</span>
                     : null }
                 </header>
                 { !this.state.user ? 
