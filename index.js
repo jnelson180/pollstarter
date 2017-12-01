@@ -24,7 +24,7 @@ let env = "development";
 passport.use(new Strategy({
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: 'http://localhost:5000/api/login/facebook/return'
+        callbackURL: 'http://localhost:3000/api/login/facebook/return'
     },
     function (accessToken, refreshToken, profile, cb) {
         // In this example, the user's Facebook profile is supplied as the user
@@ -117,7 +117,7 @@ app.get('/profile',
         }
         res.send(userData);
     });
-    
+
 function createUser() {
     console.log('called createUser');
     const user = fbProfile;
