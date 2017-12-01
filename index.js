@@ -7,7 +7,6 @@ var mongoose = require('mongoose');
 var db = mongoose.connection;
 var assert = require('assert');
 var User = require('./schema/User');
-// console.log('user is ', User);
 
 require('dotenv').config();
 
@@ -22,17 +21,12 @@ let env = "development";
 // with a user object, which will be set at `req.user` in route handlers after
 // authentication.
 
-var fbProfile = null;
-console.log(fbProfile);
-
 passport.use(new Strategy({
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
         callbackURL: 'http://localhost:5000/api/login/facebook/return'
     },
     function (accessToken, refreshToken, profile, cb) {
-        console.log('in passport.use, profile is fbProfile');
-        fbProfile = profile;
         // In this example, the user's Facebook profile is supplied as the user
         // record.  In a production-quality application, the Facebook profile should
         // be associated with a user record in the application's database, which
@@ -81,14 +75,6 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// cant have this and CRA proxy
-// if (env === "development") {
-//     const proxy = require('express-http-proxy')
-//     app.use('/*', proxy('http://localhost:3000'))
-//   } else {
-//     // probably serve up build version in production
-//   }
-
 app.get('/login',
     function (req, res) {
         res.send(req.user);
@@ -103,7 +89,6 @@ app.get('/api/login/facebook/return',
     }),
     function (req, res) {
         // need to fix this
-        fbProfile = req.user;
         User.findOne({id: req.user.id})
             .exec((err, user) => {
                 if (err) {
@@ -116,12 +101,12 @@ app.get('/api/login/facebook/return',
                 console.log('logging in as', user.name)
                 }
             })
-        console.log('redirecting to localhost:3000/');
+        console.log('redirecting to localhost:3000/home');
         res.redirect('http://localhost:3000/home');
     });
 
 app.get('/profile',
-    // require('connect-ensure-login').ensureLoggedIn(),
+    require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         console.log('hit profile endpoint');
         console.log(req.user);
@@ -130,39 +115,9 @@ app.get('/profile',
             id: user.id,
             name: user.displayName
         }
-
-        // mongoose.connect(url, function (err, db) {
-        //     assert.equal(null, err);
-        //     console.log('connected to db!');
-
-        // console.log('REQ.USER.ID =', userData.id);
-        // User.findOne({id: userData.id})
-        //     .exec((err, user) => {
-        //         if (err) {
-        //             console.log(err);
-        //             return next(err);
-        //         } else if (!user && !err) {
-        //             console.log('user not found, creating.', err);
-        //             createUser();
-        //         } else {
-        //         console.log('logging in as', user.name)
-        //         res.send(userData);
-        //         }
-        //     })
-        // });
-
         res.send(userData);
     });
-
-// app.get('/dbTest', (req, res) => {
-//     MongoClient.connect(url, function(err, db) {
-//         assert.equal(null, err);
-//         console.log("Connected correctly to server");   
-//         res.end('success!');
-//         db.close();
-//     });
-// });
-
+    
 function createUser() {
     console.log('called createUser');
     const user = fbProfile;
